@@ -555,13 +555,13 @@ class JsonFile extends Coveralls
     }
 
     /**
-     * Return whether the job requires "service_job_id" (for Travis CI).
+     * Return whether the job requires "service_job_id" (for Travis CI, GitHub Actions).
      *
      * @return bool
      */
     protected function requireServiceJobId()
     {
-        return $this->serviceName !== null && $this->serviceJobId !== null && $this->repoToken === null;
+        return $this->serviceName !== null && $this->serviceJobId !== null; // && $this->repoToken === null;
     }
 
     /**

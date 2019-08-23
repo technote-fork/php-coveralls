@@ -63,6 +63,7 @@ class CiEnvVarsCollector
             ->fillCircleCi()
             ->fillAppVeyor()
             ->fillJenkins()
+            ->fillGitHubActions()
             ->fillLocal()
             ->fillRepoToken();
 
@@ -178,6 +179,28 @@ class CiEnvVarsCollector
             $this->readEnv['BUILD_NUMBER'] = $this->env['BUILD_NUMBER'];
             $this->readEnv['JENKINS_URL'] = $this->env['JENKINS_URL'];
             $this->readEnv['CI_NAME'] = $this->env['CI_NAME'];
+        }
+
+        return $this;
+    }
+
+    /**
+     * Fill GitHub Actions environment variables.
+     *
+     * "GITHUB_SHA" must be set.
+     *
+     * @return $this
+     */
+    protected function fillGitHubActions()
+    {
+        if ( isset( $this->env['GITHUB_SHA'] ) ) {
+            $this->env['CI_JOB_ID'] = $this->env['GITHUB_SHA'];
+            $this->env['CI_NAME']   = 'GitHub Actions';
+
+            // backup
+            $this->readEnv['CI_JOB_ID']  = $this->env['CI_JOB_ID'];
+            $this->readEnv['GITHUB_SHA'] = $this->env['GITHUB_SHA'];
+            $this->readEnv['CI_NAME']    = $this->env['CI_NAME'];
         }
 
         return $this;
